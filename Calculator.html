@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calculator</title>
+    <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="theme-color" content="#4a6fa5">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap"
+      rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap"
+      rel="stylesheet" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .calculator {
+        width: 90%;
+        max-width: 400px;
+        /* limits the width on large screens */
+        margin: 20px auto;
+        padding: 15px;
+        background: linear-gradient(135deg, #355c7d, #f67280);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      #display {
+        width: 100%;
+        height: 60px;
+        color: white;
+        margin-bottom: 15px;
+        font-family: "Open Sans", sans-serif;
+        text-align: right;
+        font-size: 2rem;
+        padding: 0 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        box-sizing: border-box;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        /* 4 columns */
+        grid-gap: 10px;
+      }
+
+      .buttons button {
+        padding: 15px;
+        font-size: 1.5rem;
+        font-family: "Fredoka", cursive;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background-color: #e0e0e0;
+        transition: background-color 0.2s, transform 0.1s;
+        width: 100%;
+      }
+
+      .buttons button:focus {
+        background-color: #d5d5d5;
+        transform: scale(1.05);
+      }
+
+      /* Make the zero btton span two columns */
+      .buttons button.zero {
+        grid-column: span 2;
+      }
+
+      .end-text {
+        opacity: 0;
+        animation: fadeIn 2s ease forwards;
+        font-size: 1.05rem;
+        animation-delay: 2s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 350px) {
+        #display {
+          font-size: 1.5rem;
+        }
+
+        .buttons button {
+          font-size: 1.2rem;
+          padding: 12px;
+        }
+      }
+
+      @media (min-width: 900px) {
+        .calculator {
+          max-width: 90%;
+          max-height: 100vh;
+          background: linear-gradient(
+            135deg,
+            rgba(53, 92, 125, 0.9),
+            rgba(246, 114, 128, 0.9)
+          );
+          /* wider calculator on large screens */
+          padding: 25px;
+        }
+
+        .buttons {
+          grid-template-columns: repeat(6, 1fr);
+          /* 6 buttons per row */
+          grid-gap: 15px;
+          /* more spacing between buttons */
+        }
+
+        .buttons button {
+          font-size: 2rem;
+          /* larger buttons */
+          padding: 20px;
+        }
+
+        .end-text {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-dark text-light d-flex align-items-center justify-content-center vh-100">
+    <div class="calculator">
+      <input type="text" id="display" disabled />
+
+      <div class="buttons">
+        <!-- Advanced / Control -->
+        <button onclick="handleClick('C')">C</button>
+        <button onclick="handleClick('±')">±</button>
+        <button onclick="handleClick('%')">%</button>
+        <button onclick="handleClick('/')">/</button>
+
+        <!-- Scientific / Functions -->
+        <button onclick="handleClick('√')">√</button>
+        <button onclick="handleClick('x²')">x²</button>
+        <button onclick="handleClick('1/x')">1/x</button>
+        <button onclick="handleClick('*')">x</button>
+
+        <!-- Numbers & Basic Operators -->
+        <button onclick="handleClick('7')">7</button>
+        <button onclick="handleClick('8')">8</button>
+        <button onclick="handleClick('9')">9</button>
+        <button onclick="handleClick('-')">-</button>
+
+        <button onclick="handleClick('4')">4</button>
+        <button onclick="handleClick('5')">5</button>
+        <button onclick="handleClick('6')">6</button>
+        <button onclick="handleClick('+')">+</button>
+
+        <button onclick="handleClick('1')">1</button>
+        <button onclick="handleClick('2')">2</button>
+        <button onclick="handleClick('3')">3</button>
+        <button onclick="handleClick('=')">=</button>
+
+        <!-- Bottom row -->
+        <button onclick="handleClick('0')" class="zero">0</button>
+        <button onclick="handleClick('.')">.</button>
+      </div>
+      <p
+        class="end-text text-center p-2 pt-3"
+        style="font-family: 'Gloria Hallelujah'">
+        Made with 💙 by Cucu
+      </p>
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const display = document.getElementById("display");
+      let justCalculated = false;
+
+      const errorMessages = [
+        "Error, Vikky",
+        "Oopsie!",
+        "Math meltdown!",
+        "💥 Boom! Error!",
+      ];
+
+      function showError() {
+        const random =
+          errorMessages[Math.floor(Math.random() * errorMessages.length)];
+        display.value = random;
+      }
+
+      function handleClick(value) {
+        // If last action was "=" and the user presses a number or ".", start fresh
+        if ((justCalculated && !isNaN(value)) || value === ".") {
+          display.value = "";
+          justCalculated = false;
+        }
+
+        if (value === "C") {
+          display.value = "";
+          justCalculated = false;
+          return;
+        }
+
+        if (value === "=") {
+          try {
+            display.value = eval(display.value);
+          } catch {
+            showError();
+          }
+          justCalculated = true; // mark that calculation just happened
+          return;
+        }
+
+        // Advanced operations on current number
+        const current = parseFloat(display.value);
+        if (!isNaN(current)) {
+          switch (value) {
+            case "√":
+              display.value = Math.sqrt(current);
+              justCalculated = true;
+              return;
+            case "x²":
+              display.value = Math.pow(current, 2);
+              justCalculated = true;
+              return;
+            case "1/x":
+              display.value = 1 / current;
+              justCalculated = true;
+              return;
+            case "±":
+              display.value = current * -1;
+              return;
+            case "%":
+              display.value = current / 100;
+              justCalculated = true;
+              return;
+          }
+        }
+
+        // Append numbers/operators
+        display.value += value;
+        justCalculated = false; // reset flag if user is typing numbers/operators
+      }
+
+      if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker registered'))
+      .catch(err => console.log('Service Worker failed:', err));
+  });
+}
+
+    </script>
+    <script src="sw.js"></script> 
+  </body>
+</html>
